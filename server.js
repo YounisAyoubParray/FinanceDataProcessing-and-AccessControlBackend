@@ -353,6 +353,31 @@ app.get("/", (req, res) => {
 });
 
 
+app.use((req, res, next) => {
+  const err = new Error(`Route not found: ${req.method} ${req.originalUrl}`);
+  err.status = 404;
+  next(err);
+});
+
+
+app.use((err, req, res, next) => {
+  if (res.headersSent) {
+    return next(err);
+  }
+
+  console.error(err);
+
+  const status = Number(err.status) || 500;
+  const isProduction = process.env.NODE_ENV === "production";
+  const message = status === 500 ? "Server error" : err.message;
+
+  return res.status(status).json({
+    message,
+    ...(status === 500 && !isProduction && err.message ? { error: err.message } : {}),
+  });
+});
+
+
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
