@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard</title>
+</head>
+<body>
+  <h1>Dashboard</h1>
+  <div>
+    <h3>Create Record</h3>
+    <form id="recordForm">
+      Amount: <input type="number" name="amount" min="1" required><br>
+      Type:
+      <select name="type">
+        <option value="income">Income</option>
+        <option value="expense">Expense</option>
+      </select><br>
+      Category: <input type="text" name="category"><br>
+      Notes: <input type="text" name="notes" value="none"><br>
+      <button type="submit">Add Record</button>
+    </form>
+  </div>
+  <button id="logoutBtn">Logout</button>
+  <div>
+    <% if(role !== "user") { %>
+    <div>
+      <p>Net: <strong id="PersonalNet"><%= totals?.net ?? 0 %></strong></p>
+    <p>Scope: <strong >Personal</strong></p>
+    </div>
+    <% } %>
+    <h3>Summary</h3>
+    <button id="loadDashboard">Refresh Dashboard</button>
+    <p>Total Income: <strong id="totalIncome"><%= totals?.totalIncome ?? 0 %></strong></p>
+    <p>Total Expense: <strong id="totalExpense"><%= totals?.totalExpense ?? 0 %></strong></p>
+    <p>Net: <strong id="totalNet"><%= totals?.net ?? 0 %></strong></p>
+    <p>Scope: <strong id="totalsScope"><%= totals?.scope ?? "-" %></strong></p>
+    <pre id="dashboardData"><%= JSON.stringify({ records, role, totals }, null, 2) %></pre>
+  </div>
+  
+  <% if (role === "admin") { %>
+     <div>
+      <h3>All Users (Admin Only)</h3>
+      <button id="loadUsersBtn">Load Users</button>
+      <pre id="usersData"></pre>
+    <div>
+      <h3>Delete Record by ID (Admin Only)</h3>
+      <input type="number" id="deleteRecordId" placeholder="Enter Record ID" required>
+      <button id="deleteRecordBtn">Delete Record</button>
+    </div>
+    <div>
+      <h3>Delete User by ID (Admin Only)</h3>
+      <input type="number" id="deleteUserId" placeholder="Enter User ID" required>
+      <button id="deleteUserBtn">Delete User</button>
+    </div>
+  <% } %>
+  <script src="main.js"></script>
+</body>
+</html>
