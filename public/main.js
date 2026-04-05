@@ -86,7 +86,7 @@ const loadDashboardData = async () => {
       if (totalExpenseEl) totalExpenseEl.innerText = String(data.totals.totalExpense ?? 0);
       if (totalNetEl) totalNetEl.innerText = String(data.totals.net ?? 0);
       if (totalsScopeEl) totalsScopeEl.innerText = data.totals.scope ?? "-";
-      if (personalNetEl) personalNetEl.innerText = String(data.personalTotals?.net ?? 0);
+      if (personalNetEl) personalNetEl.innerText = String(data.personalTotals?.net ?? data.totals?.net ?? 0);
     }
 };
 

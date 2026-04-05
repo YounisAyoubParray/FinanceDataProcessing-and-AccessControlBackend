@@ -24,7 +24,7 @@
   <div>
     <% if(role !== "user") { %>
     <div>
-      <p>Net: <strong id="PersonalNet"><%= totals?.net ?? 0 %></strong></p>
+      <p>Net: <strong id="PersonalNet"><%= personalTotals?.net ?? totals?.net ?? 0 %></strong></p>
     <p>Scope: <strong >Personal</strong></p>
     </div>
     <% } %>

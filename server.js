@@ -174,23 +174,20 @@ app.get("/dashboard", authenticateJWT, async (req, res) => {
     const totalIncome = Number(totalsRow.total_income);
     const totalExpense = Number(totalsRow.total_expense);
 
-    let personalTotals = null;
-    if (canViewOverallTotals) {
-      const personalRes = await pool.query(
-        `SELECT
-          COALESCE(SUM(CASE WHEN type = 'income' THEN amount ELSE 0 END), 0) AS total_income,
-          COALESCE(SUM(CASE WHEN type = 'expense' THEN amount ELSE 0 END), 0) AS total_expense
-         FROM records
-         WHERE user_id=$1`,
-        [req.user.id]
-      );
-      const personalRow = personalRes.rows[0];
-      personalTotals = {
-        totalIncome: Number(personalRow.total_income),
-        totalExpense: Number(personalRow.total_expense),
-        net: Number(personalRow.total_income) - Number(personalRow.total_expense)
-      };
-    }
+    const personalRes = await pool.query(
+      `SELECT
+        COALESCE(SUM(CASE WHEN type = 'income' THEN amount ELSE 0 END), 0) AS total_income,
+        COALESCE(SUM(CASE WHEN type = 'expense' THEN amount ELSE 0 END), 0) AS total_expense
+       FROM records
+       WHERE user_id=$1`,
+      [req.user.id]
+    );
+    const personalRow = personalRes.rows[0];
+    const personalTotals = {
+      totalIncome: Number(personalRow.total_income),
+      totalExpense: Number(personalRow.total_expense),
+      net: Number(personalRow.total_income) - Number(personalRow.total_expense)
+    };
 
     res.render("dashboard.ejs", {
       records,
@@ -244,23 +241,20 @@ app.get("/api/dashboard", authenticateJWT, async (req, res) => {
     const totalIncome = Number(totalsRow.total_income);
     const totalExpense = Number(totalsRow.total_expense);
 
-    let personalTotals = null;
-    if (canViewOverallTotals) {
-      const personalRes = await pool.query(
-        `SELECT
-          COALESCE(SUM(CASE WHEN type = 'income' THEN amount ELSE 0 END), 0) AS total_income,
-          COALESCE(SUM(CASE WHEN type = 'expense' THEN amount ELSE 0 END), 0) AS total_expense
-         FROM records
-         WHERE user_id=$1`,
-        [req.user.id]
-      );
-      const personalRow = personalRes.rows[0];
-      personalTotals = {
-        totalIncome: Number(personalRow.total_income),
-        totalExpense: Number(personalRow.total_expense),
-        net: Number(personalRow.total_income) - Number(personalRow.total_expense)
-      };
-    }
+    const personalRes = await pool.query(
+      `SELECT
+        COALESCE(SUM(CASE WHEN type = 'income' THEN amount ELSE 0 END), 0) AS total_income,
+        COALESCE(SUM(CASE WHEN type = 'expense' THEN amount ELSE 0 END), 0) AS total_expense
+       FROM records
+       WHERE user_id=$1`,
+      [req.user.id]
+    );
+    const personalRow = personalRes.rows[0];
+    const personalTotals = {
+      totalIncome: Number(personalRow.total_income),
+      totalExpense: Number(personalRow.total_expense),
+      net: Number(personalRow.total_income) - Number(personalRow.total_expense)
+    };
 
     res.json({
       records,
